@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+
+<body>
+    <div id="botoes">
+        <div id="oi" v-if="mostrar_div" v-html="mensag"></div>
+        <button type="button" v-on:click="mostrar" v-if="!mostrar_div" />Mostrar</button>
+        <button type="button" v-on:click="esconder" v-if="mostrar_div" />Esconder</button><br>
+        <input type="text" v-model="name"> {{name}}<br>
+        <textarea v-model="adress">
+        </textarea>{{adress}}
+        <br>
+        <ul>
+            <li v-for="(item, index) in list" :key="index">
+                {{item.nome}}
+                <input type="text" v-model="item.nome" v-bind:style="fundo" v-on:change="inserido" />
+            </li>
+        </ul>
+        <select v-model="nomeSelect">
+            <option v-for="(item, index) in list" :key="index" v-bind:value="item.nome">{{item.nome}}</option>
+        </select><br> O nome selecionado foi: {{nomeSelect}} e alteramos {{quant}} vezes.
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+<script>
+    var botoes = new Vue({
+        el: "#botoes",
+        data: {
+            mostrar_div: true,
+            name: "Inserir nome",
+            adress: "Inserir endereço",
+            list: [{
+                nome: "Nome 1"
+            }, {
+                nome: "Nome 2"
+            }, {
+                nome: "Nome 3"
+            }],
+            quant: 0,
+            nomeSelect: "",
+            fundo: "background-color:#B22222",
+            mensag: "Oi oi oi",
+        },
+        methods: {
+            mostrar() {
+                this.mostrar_div = true;
+            },
+            esconder() {
+                this.mostrar_div = false;
+            },
+            inserido(event) {
+                alert("O nome foi inserido");
+                console.log("evento?", event);
+                console.log("valor?", event.target.value);
+            },
+        },
+        watch: {
+            nomeSelect: function() {
+                this.quant++;
+            }
+        },
+        computed: {
+            mostraQuant: function() {
+                if (this.quant > 0) {
+                    return true;
+                }
+                return false;
+            }
+        },
+        mounted() {
+            console.log("Esse método geralmente carrega dados do servidor, e/ou pega campos na tela");
+        }
+    });
+</script>
+
+</html>
